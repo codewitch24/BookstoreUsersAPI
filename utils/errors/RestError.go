@@ -6,14 +6,14 @@ const (
 	BadRequest = "BAD_REQUEST"
 )
 
-type RestError struct {
+type ErrorResponse struct {
 	Message string `json:"message"`
 	Status  int    `json:"status"`
 	Error   string `json:"error"`
 }
 
-func NewBadRequestError(message string) *RestError {
-	return &RestError{
+func NewBadRequestError(message string) *ErrorResponse {
+	return &ErrorResponse{
 		Message: message,
 		Status:  http.StatusBadRequest,
 		Error:   BadRequest,

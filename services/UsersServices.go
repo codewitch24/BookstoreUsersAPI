@@ -5,7 +5,7 @@ import (
 	"github.com/codewitch24/BookstoreUsersAPI/utils/errors"
 )
 
-func CreateUser(user users.User) (*users.User, *errors.RestError) {
+func CreateUser(user users.User) (*users.User, *errors.ErrorResponse) {
 	if err := user.Validate(); err != nil {
 		return nil, err
 	}

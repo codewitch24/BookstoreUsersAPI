@@ -13,7 +13,7 @@ type User struct {
 	Created   string `json:"created"`
 }
 
-func (user *User) Validate() *errors.RestError {
+func (user *User) Validate() *errors.ErrorResponse {
 	user.Email = strings.TrimSpace(strings.ToLower(user.Email))
 	if user.Email == "" {
 		return errors.NewBadRequestError("Invalid Email Address")
