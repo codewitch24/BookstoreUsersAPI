@@ -6,9 +6,8 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func MapUrls(r *gin.Engine) *gin.Engine {
+func MapUrls(r *gin.Engine) {
 	r.GET("/ping", PingController.Ping)
 	r.POST("/users", UsersController.CreateUser)
 	r.GET("/users/:UserId", UsersController.GetUser)
-	return r
 }

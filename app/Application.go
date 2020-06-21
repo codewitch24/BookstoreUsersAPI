@@ -10,8 +10,8 @@ var (
 )
 
 func StartApplication() {
-	r := MapUrls(router)
-	if err := r.Run(":8080"); err != nil {
+	MapUrls(router)
+	if err := router.Run(":8080"); err != nil {
 		log.Fatal(err)
 	}
 }
