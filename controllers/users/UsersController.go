@@ -6,6 +6,7 @@ import (
 	"github.com/codewitch24/BookstoreUsersAPI/utils/errors"
 	"github.com/gin-gonic/gin"
 	"net/http"
+	"strconv"
 )
 
 func CreateUser(c *gin.Context) {
@@ -24,5 +25,16 @@ func CreateUser(c *gin.Context) {
 }
 
 func GetUser(c *gin.Context) {
-	c.String(http.StatusNotImplemented, "Implement Me!")
+	userId, userErr := strconv.ParseInt(c.Param("UserId"), 10, 64)
+	if userErr != nil {
+		err := errors.NewBadRequestError("User Id Should be a Number")
+		c.JSON(err.Status, err)
+		return
+	}
+	result, getErr := services.GetUser(userId)
+	if getErr != nil {
+		c.JSON(getErr.Status, getErr)
+		return
+	}
+	c.JSON(http.StatusOK, result)
 }

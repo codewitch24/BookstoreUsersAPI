@@ -4,6 +4,7 @@ import "net/http"
 
 const (
 	BadRequest = "BAD_REQUEST"
+	NotFound   = "NOT_FOUND"
 )
 
 type RestError struct {
@@ -17,5 +18,13 @@ func NewBadRequestError(message string) *RestError {
 		Message: message,
 		Status:  http.StatusBadRequest,
 		Error:   BadRequest,
+	}
+}
+
+func NewNotFoundError(message string) *RestError {
+	return &RestError{
+		Message: message,
+		Status:  http.StatusNotFound,
+		Error:   NotFound,
 	}
 }
