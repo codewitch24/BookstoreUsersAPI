@@ -2,6 +2,7 @@ package users
 
 import (
 	"fmt"
+	"github.com/codewitch24/BookstoreUsersAPI/utils/date"
 	"github.com/codewitch24/BookstoreUsersAPI/utils/errors"
 )
 
@@ -30,6 +31,7 @@ func (user *User) Save() *errors.RestError {
 		}
 		return errors.NewBadRequestError(fmt.Sprintf("user %d aleady exists", user.Id))
 	}
+	user.Created = date.GetNowStringDate()
 	usersDB[user.Id] = user
 	return nil
 }
