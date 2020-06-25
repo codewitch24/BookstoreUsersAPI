@@ -1,0 +1,8 @@
+DB:
+  Config:
+    Mysql:
+      UsersDB:
+        Username:
+        Password:
+        Host:
+        Schema:
