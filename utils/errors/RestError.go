@@ -3,8 +3,9 @@ package errors
 import "net/http"
 
 const (
-	BadRequest = "BAD_REQUEST"
-	NotFound   = "NOT_FOUND"
+	BadRequest          = "BAD_REQUEST"
+	NotFound            = "NOT_FOUND"
+	InternalServerError = "INTERNAL_SERVER_ERROR"
 )
 
 type RestError struct {
@@ -26,5 +27,13 @@ func NewNotFoundError(message string) *RestError {
 		Message: message,
 		Status:  http.StatusNotFound,
 		Error:   NotFound,
+	}
+}
+
+func NewInternalServerError(message string) *RestError {
+	return &RestError{
+		Message: message,
+		Status:  http.StatusInternalServerError,
+		Error:   InternalServerError,
 	}
 }
