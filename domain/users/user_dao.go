@@ -10,6 +10,8 @@ import (
 const (
 	queryInsertUser = "INSERT INTO users (first_name, last_name, email, created) VALUES (?, ?, ?, ?);"
 	queryGetUser    = "SELECT * FROM users WHERE id = ?;"
+	queryUpdateUser = "UPDATE users SET first_name=?, last_name=?, email=? WHERE id=?;"
+	queryDeleteUser = "DELETE FROM users WHERE id=?"
 )
 
 func (user *User) Get() *errors.RestError {
@@ -51,4 +53,38 @@ func (user *User) Save() *errors.RestError {
 	}
 	user.Id = userId
 	return nil
+}
+
+func (user *User) Update() *errors.RestError {
+	stmt, err := usersdb.Client.Prepare(queryUpdateUser)
+	if err != nil {
+		return errors.NewInternalServerError(err.Error())
+	}
+	defer func() {
+		_ = stmt.Close()
+	}()
+	_, err = stmt.Exec(user.FirstName, user.LastName, user.Email, user.Id)
+	if err != nil {
+		return mysql.ParseError(err)
+	}
+	return nil
+}
+
+func (user *User) Delete() (int64, *errors.RestError) {
+	stmt, err := usersdb.Client.Prepare(queryDeleteUser)
+	if err != nil {
+		return 0, errors.NewInternalServerError(err.Error())
+	}
+	defer func() {
+		_ = stmt.Close()
+	}()
+	result, err := stmt.Exec(user.Id)
+	if err != nil {
+		return 0, mysql.ParseError(err)
+	}
+	n, err := result.RowsAffected()
+	if err != nil {
+		return 0, errors.NewInternalServerError(err.Error())
+	}
+	return n, nil
 }
