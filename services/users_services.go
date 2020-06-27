@@ -2,6 +2,7 @@ package services
 
 import (
 	"github.com/codewitch24/BookstoreUsersAPI/domain/users"
+	"github.com/codewitch24/BookstoreUsersAPI/utils/date"
 	"github.com/codewitch24/BookstoreUsersAPI/utils/errors"
 )
 
@@ -17,6 +18,8 @@ func CreateUser(user users.User) (*users.User, *errors.RestError) {
 	if err := user.Validate(); err != nil {
 		return nil, err
 	}
+	user.Status = users.StatusNonActive
+	user.Created = date.GetNowDatabaseFormat()
 	if err := user.Save(); err != nil {
 		return nil, err
 	}
@@ -59,4 +62,9 @@ func DeleteUser(userId int64) *errors.RestError {
 		return errors.NewBadRequestError("Maybe invalid data to delete")
 	}
 	return nil
+}
+
+func Search(status string) ([]users.User, *errors.RestError) {
+	user := &users.User{}
+	return user.FindByStatus(status)
 }

@@ -80,3 +80,13 @@ func Delete(c *gin.Context) {
 	}
 	c.JSON(http.StatusNoContent, nil)
 }
+
+func Search(c *gin.Context) {
+	status := c.Query("status")
+	results, err := services.Search(status)
+	if err != nil {
+		c.JSON(err.Status, err)
+		return
+	}
+	c.JSON(http.StatusOK, results)
+}
