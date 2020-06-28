@@ -2,6 +2,7 @@ package services
 
 import (
 	"github.com/codewitch24/BookstoreUsersAPI/domain/users"
+	"github.com/codewitch24/BookstoreUsersAPI/utils/crypto"
 	"github.com/codewitch24/BookstoreUsersAPI/utils/date"
 	"github.com/codewitch24/BookstoreUsersAPI/utils/errors"
 )
@@ -18,6 +19,7 @@ func CreateUser(user users.User) (*users.User, *errors.RestError) {
 	if err := user.Validate(); err != nil {
 		return nil, err
 	}
+	user.Password = crypto.GetMd5(user.Password)
 	user.Status = users.StatusNonActive
 	user.Created = date.GetNowDatabaseFormat()
 	if err := user.Save(); err != nil {
@@ -64,7 +66,7 @@ func DeleteUser(userId int64) *errors.RestError {
 	return nil
 }
 
-func Search(status string) ([]users.User, *errors.RestError) {
+func Search(status string) (users.Users, *errors.RestError) {
 	user := &users.User{}
 	return user.FindByStatus(status)
 }

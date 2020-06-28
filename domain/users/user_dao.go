@@ -9,10 +9,10 @@ import (
 
 const (
 	queryInsertUser       = "INSERT INTO users (first_name, last_name, email, created, password, status) VALUES (?, ?, ?, ?, ?, ?);"
-	queryGetUser          = "SELECT * FROM users WHERE id = ?;"
+	queryGetUser          = "SELECT id, first_name, last_name, email, created, status FROM users WHERE id = ?;"
 	queryUpdateUser       = "UPDATE users SET first_name=?, last_name=?, email=? WHERE id=?;"
 	queryDeleteUser       = "DELETE FROM users WHERE id=?;"
-	queryFindUserByStatus = "SELECT * from users WHERE status=?;"
+	queryFindUserByStatus = "SELECT id, first_name, last_name, email, created, status from users WHERE status=?;"
 )
 
 func (user *User) Get() *errors.RestError {
@@ -30,8 +30,7 @@ func (user *User) Get() *errors.RestError {
 		&user.LastName,
 		&user.Email,
 		&user.Created,
-		&user.Status,
-		&user.Password); err != nil {
+		&user.Status); err != nil {
 		return mysql.ParseError(err)
 	}
 	return nil
@@ -117,8 +116,7 @@ func (user *User) FindByStatus(status string) ([]User, *errors.RestError) {
 			&user.LastName,
 			&user.Email,
 			&user.Created,
-			&user.Status,
-			&user.Password); err != nil {
+			&user.Status); err != nil {
 			return nil, mysql.ParseError(err)
 		}
 		results = append(results, user)
