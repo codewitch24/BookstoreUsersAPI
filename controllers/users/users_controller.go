@@ -88,6 +88,6 @@ func Search(c *gin.Context) {
 		c.JSON(err.Status, err)
 		return
 	}
-	results.Marshall(c.GetHeader("X-Public") == "true")
-	c.JSON(http.StatusOK, results)
+	r := results.Marshall(c.GetHeader("X-Public") == "true")
+	c.JSON(http.StatusOK, r)
 }
